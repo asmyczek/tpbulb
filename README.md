@@ -8,7 +8,7 @@ these services.
 
 I still hope for native transitions support in _pyHS100_ and _tplink_ component.
 
-You at your own risk.
+Use at your own risk.
 
 
 Installation
@@ -62,6 +62,32 @@ Services
   
   Simulates sundown in two stages over a default time period of 30 minutes.
   
+
+Examples
+--------
+
+Example automation
+
+```
+automation:
+
+  - alias: Weekday wake-up
+    trigger:
+      platform: time
+      at: "05:30:00"
+    condition:
+      condition: time
+      weekday:
+        - mon
+        - tue
+        - wed
+        - thu
+        - fri
+    action:
+      service: tpbulb.sunrise
+      data:
+        name: badroom-corner-light
+```
 
 License
 -------
