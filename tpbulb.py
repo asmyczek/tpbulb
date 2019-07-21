@@ -1,8 +1,10 @@
+"""
+TPLink bulb with transition support
+"""
 from pyHS100 import SmartBulb, SmartDeviceException
 from threading import Thread, Event
 import time
 import logging
-
 
 WARM_LIGHT = 2700
 COLD_LIGHT = 6500
@@ -17,15 +19,15 @@ NIGHT_STATE = {
     "color_temp": WARM_LIGHT
 }
 
-# {"name": "kids-sun-light"}
-
 TRANSITION_RATIO = (50, 30, 20) # sum = 100!
 
-# Default sunrise/sunset time
-SUN_TRANSITION_PERIOD = 1 * 60 * 1000
+# Default sunrise/sunset period
+SUN_TRANSITION_PERIOD = 30 * 60 * 1000
 
 _LOGGER = logging.getLogger(__name__)
 
+# Global transition thread link
+# todo: fix global variable
 _TRANSITION_THREAD = None
 
 
@@ -218,5 +220,5 @@ class TPBulb(SmartBulb):
         if transition_period < 0:
             transition_period = SUN_TRANSITION_PERIOD
 
-         _TRANSITION_THREAD = SunsetThread(self, transition_period)
-         _TRANSITION_THREAD.start()
+        _TRANSITION_THREAD = SunsetThread(self, transition_period)
+        _TRANSITION_THREAD.start()
