@@ -114,5 +114,25 @@ def setup(hass, config):
             )
     hass.services.register(DOMAIN, 'sunset', sunset)
 
+    def day(call):
+        """
+        Turn bulb on to day mode
+        :param call: no params
+        :return:
+        """
+        with BulbConnection(call.data.get(ATTR_NAME, None)) as bulb:
+            bulb.day()
+    hass.services.register(DOMAIN, 'day', day)
+
+    def night(call):
+        """
+        Switch off bulb, set to night mode
+        :param call: no params
+        :return:
+        """
+        with BulbConnection(call.data.get(ATTR_NAME, None)) as bulb:
+            bulb.night()
+    hass.services.register(DOMAIN, 'night', night)
+
     return True
 

@@ -43,11 +43,14 @@ class SunriseThread(Thread):
         if not self.__stop.is_set():
             self.__stop.set()
 
+    def stopped(self):
+        return self.__stop.is_set() or not self.__bulb.is_on()
+
     def run(self):
         light_state = {}
 
         # Phase 1
-        if not self.__stop.is_set():
+        if not self.stopped():
             phase1_period = int(self.__period * TRANSITION_RATIO[0] / 100)
             light_state.update({
                 "brightness": TRANSITION_RATIO[0],
@@ -59,7 +62,7 @@ class SunriseThread(Thread):
             time.sleep(int(phase1_period / 1000) + 2)
 
         # Phase 2
-        if not self.__stop.is_set():
+        if not self.stopped():
             phase2_period = int(self.__period * TRANSITION_RATIO[1] / 100)
             light_state.update({
                 "brightness": TRANSITION_RATIO[0] + TRANSITION_RATIO[1],
@@ -71,7 +74,7 @@ class SunriseThread(Thread):
             time.sleep(int(phase2_period / 1000) + 2)
 
         # Phase 3
-        if not self.__stop.is_set():
+        if not self.stopped():
             phase3_period = int(self.__period * TRANSITION_RATIO[2] / 100)
             light_state.update({
                 "brightness": 100,
@@ -95,11 +98,14 @@ class SunsetThread(Thread):
         if not self.__stop.is_set():
             self.__stop.set()
 
+    def stopped(self):
+        return self.__stop.is_set() or not self.__bulb.is_on()
+
     def run(self):
         light_state = {}
 
         # Phase 1
-        if not self.__stop.is_set():
+        if not self.stopped():
             phase1_period = int(self.__period * TRANSITION_RATIO[0] / 100)
             light_state.update({
                 "brightness": 100,
@@ -111,7 +117,7 @@ class SunsetThread(Thread):
             time.sleep(int(phase1_period / 1000) + 2)
 
         # Phase 2
-        if not self.__stop.is_set():
+        if not self.stopped():
             phase2_period = int(self.__period * TRANSITION_RATIO[1] / 100)
             light_state.update({
                 "brightness": TRANSITION_RATIO[1],
@@ -123,7 +129,7 @@ class SunsetThread(Thread):
             time.sleep(int(phase2_period / 1000) + 2)
 
         # Phase 3
-        if not self.__stop.is_set():
+        if not self.stopped():
             phase3_period = int(self.__period * TRANSITION_RATIO[2] / 100)
             light_state.update({
                 "brightness": 0,
@@ -134,7 +140,7 @@ class SunsetThread(Thread):
             self.__bulb.set_light_state(light_state)
             time.sleep(int(phase3_period / 1000) + 2)
 
-        if not self.__stop.is_set():
+        if not self.stopped():
             self.__bulb.turn_off()
 
 
@@ -222,3 +228,31 @@ class TPBulb(SmartBulb):
 
         _TRANSITION_THREAD = SunsetThread(self, transition_period)
         _TRANSITION_THREAD.start()
+
+    def day(self):
+        global _TRANSITION_THREAD
+        if _TRANSITION_THREAD is not None:
+            _TRANSITION_THREAD.stop()
+            _TRANSITION_THREAD = None
+
+        self.turn_on()
+
+        light_state = {}
+        light_state.update(DAY_STATE)
+        self.set_light_state(light_state)
+
+    def night(self):
+        global _TRANSITION_THREAD
+        if _TRANSITION_THREAD is not None:
+            _TRANSITION_THREAD.stop()
+            _TRANSITION_THREAD = None
+
+        self.turn_on()
+
+        light_state = {}
+        light_state.update(NIGHT_STATE)
+        self.set_light_state(light_state)
+
+        time.sleep(1)
+        self.turn_off()
+

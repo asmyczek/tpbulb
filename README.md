@@ -62,6 +62,21 @@ Services
   
   Simulates sundown in two stages over a default time period of 30 minutes.
   
+* day(
+  * name - _bulb name as defined in configuration.yaml_
+
+  )
+  
+  Turn on light to day mode
+  
+* night(
+  * name - _bulb name as defined in configuration.yaml_
+
+  )
+  
+  Set light to night mode and turn off
+  
+  
 
 Examples
 --------
