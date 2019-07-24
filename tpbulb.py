@@ -44,7 +44,7 @@ class SunriseThread(Thread):
             self.__stop.set()
 
     def stopped(self):
-        return self.__stop.is_set() or not self.__bulb.is_on()
+        return self.__stop.is_set()
 
     def run(self):
         light_state = {}
@@ -99,7 +99,7 @@ class SunsetThread(Thread):
             self.__stop.set()
 
     def stopped(self):
-        return self.__stop.is_set() or not self.__bulb.is_on()
+        return self.__stop.is_set()
 
     def run(self):
         light_state = {}
