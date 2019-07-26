@@ -179,7 +179,7 @@ class TPBulb(SmartBulb):
             _TRANSITION_THREAD.stop()
             _TRANSITION_THREAD = None
 
-        light_state = self.get_light_state()
+        light_state = {}
         if color_temp > 0:
             light_state["color_temp"] = color_temp
 
@@ -189,7 +189,12 @@ class TPBulb(SmartBulb):
         if period >= 0:
             light_state["transition_period"] = period
 
-        self.set_light_state(light_state)
+        if brightness > 0:
+            self.turn_on()
+            self.set_light_state(light_state)
+        else:
+            self.set_light_state(light_state)
+            self.turn_off()
 
     def sunrise(self, transition_period=-1):
         global _TRANSITION_THREAD
