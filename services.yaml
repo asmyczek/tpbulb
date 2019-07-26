@@ -1,0 +1,54 @@
+# TPBulb service description
+
+turn_on:
+  description: 'Turn on the bulb.'
+  fields:
+    namne:
+      description: 'Bulb name as defined in configuration.yaml.'
+
+turn_off:
+  description: 'Turn off the bulb.'
+  fields:
+    namne:
+      description: 'Bulb name as defined in configuration.yaml.'
+
+transition:
+  description: 'Transition to new state with transition period support.'
+  fields:
+    namne:
+      description: 'Bulb name as defined in configuration.yaml.'
+    color_temp:
+      description: 'New color temperature.'
+    brightness:
+      description: 'New brightness.'
+    transition:
+      description: 'Transition time in Milliseconds.'
+
+sunrise:
+  description: 'Sunrise simulation.'
+  fields:
+    namne:
+      description: 'Bulb name as defined in configuration.yaml.'
+    transition:
+      description: 'Sunrise transition time in Milliseconds.'
+
+sunset:
+  description: 'Sunset simulation.'
+  fields:
+    namne:
+      description: 'Bulb name as defined in configuration.yaml.'
+    transition:
+      description: 'Sunset transition time in Milliseconds.'
+
+day:
+  description: 'Switch light on to max brightness.'
+  fields:
+    namne:
+      description: 'Bulb name as defined in configuration.yaml.'
+
+night:
+  description: 'Switch light to lowest brightness and turn off.'
+  fields:
+    namne:
+      description: 'Bulb name as defined in configuration.yaml.'
+
